@@ -63,10 +63,18 @@ async function readFirstMail(req, res) {
     console.log('saket', data.payload)
 
     const emailData = {
-      from: data.payload.headers[16].value,
-      subject: data.payload.headers[19].value,
       body: data.snippet,
     }
+
+    data.payload.headers.forEach((data) => {
+      if(data.name === 'From'){
+        emailData.from = data.value
+      }
+
+      if(data.name === 'Subject'){
+        emailData.subject = data.value
+      }
+    })
 
     res.json(emailData);
   }catch (err){
